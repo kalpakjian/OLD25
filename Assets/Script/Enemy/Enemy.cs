@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour {
 
 	public GameObject rewardItem;
 
+	public Faction faction = Faction.Enemy;
 	public UnityEvent dieEvent;
 
 	protected void start () {
