@@ -109,7 +109,24 @@ public class Enemy : MonoBehaviour {
 			NM.updateRotation = false;
 	}
 
+	protected AttackData ConvertAttack(Attack attack)
+	{
+		AttackData data = new AttackData();
+		data.attacker = null;
+		data.attackerFaction = Faction.Player;
+		data.damage = attack.damage;
+		data.position = attack.position;
+		data.type = attack.type;
+		data.strength = attack.strength;
+		return data;
+	}
+
 	protected virtual void Hurt(Attack attack)
+	{
+		TakeDamage(ConvertAttack(attack));
+	}
+
+	public virtual void TakeDamage(AttackData attack)
 	{
 		if (!dead && Time.time >= nextHurtTime)
 		{
@@ -127,6 +144,7 @@ public class Enemy : MonoBehaviour {
 				Die();
 				return;
 			}
+
 			anim.SetTrigger("hurt");
 
 			Vector3 pushBack = (transform.position - attack.position).normalized;
@@ -137,13 +155,25 @@ public class Enemy : MonoBehaviour {
 			{
 				for (int i = 0; i < material.Count; i++)
 					material[i].color = frozenColor;
-				anim.speed = 0.5f;
+
+				anim.speed = GetFrozenAnimSpeed();
 				Invoke("Recover", 5);
 			}
 
 			nextHurtTime = Time.time + hurtInterval;
 			nextAttackTime = Time.time + attackInterval;
+
+			OnTakeDamage(attack);
 		}
+	}
+
+	protected virtual float GetFrozenAnimSpeed()
+	{
+		return 0.5f;
+	}
+
+	protected virtual void OnTakeDamage(AttackData attack)
+	{
 	}
 
 	protected void Recover()
@@ -184,4 +214,3 @@ public class Enemy : MonoBehaviour {
     }
 
 }
-
