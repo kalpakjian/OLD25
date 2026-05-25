@@ -140,6 +140,18 @@
 
 ---
 
+### 11. Level01 場景數值調整與欄位對齊（289638a）
+
+**修改檔案：** `Assets/Level01.unity`
+
+- 部分敵人的 `maxHP` 從 100 調高至 **200**，使戰鬥節奏更耐打
+- 兩個武器組件的 `weaponDamage` 從 0 設定為 **10**，修正原本造成 0 傷害的問題
+- 一種敵人類型的 script 參考換成新版 GUID（對應舊版 `EnemyController` → 新版繼承 `EnemyBase` 的腳本）
+- 實體組件欄位排列重新整理：`faction`、`power`、`maxHP` 現在排在 `traceRange`、`attackRange` 等戰鬥欄位之前，與 `CombatActor` 的 Inspector 定義一致
+- `AllowRotate` 改名為 `allowRotate`，與新版 `CombatActor.allowRotate` 欄位名稱對齊
+
+---
+
 ## 目前架構總覽
 
 ```
