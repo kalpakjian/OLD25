@@ -32,7 +32,7 @@
   - 扣血、死亡判斷
   - 擊退（`Rigidbody.AddForce`）
   - 冰凍減速（`animator.speed = frozenAnimSpeed`）
-  - 過渡用 `Hurt(float)` 保持舊呼叫相容
+  - 過渡用 `Hurt(Attack)` 保持舊呼叫相容
 - `BossController` 改用 `OnTakeDamage` 鉤子覆寫，移除重複的受傷邏輯
 
 ---
@@ -123,31 +123,51 @@
 
 ---
 
+### 10. 移除武器與攻擊腳本的舊版 Enemy fallback（f964f9f）
+
+**修改檔案：**
+- `Assets/Script/Enemy/OLDEnemy.cs`（`Enemy.cs` 改名為 `OLDEnemy.cs`，class 名稱保持 `Enemy`）
+- `Assets/Script/Enemy/EnemyController.cs`（新增：薄封裝，繼承 `Enemy` 並呼叫 `start/update/lateUpdate`）
+- `Assets/Script/Enemy/EnemyAttack.cs`（移除 `enemyLegacy` fallback，僅保留 `EnemyBase`）
+- `Assets/Script/Enemy/EnemyWeapon.cs`（移除舊 `Enemy` owner fallback，僅使用 `EnemyBase`）
+- `Assets/Script/Player/PlayerWeapon.cs`（移除舊 `Enemy` 目標 fallback，僅使用 `CombatActor`）
+
+**重點說明：**
+- 場景 prefab 已全面換成繼承 `EnemyBase` 的新版敵人，舊版相容程式碼已可安全移除
+- `PlayerWeapon` / `EnemyWeapon` / `EnemyAttack` 現在只與新版系統（`CombatActor` / `EnemyBase`）互動
+- `EnemyRotate` 仍保留對舊版 `Enemy` 的 fallback（兼顧尚未完全替換的特殊場景物件）
+- `OLDEnemy.cs` 本身保留作為 `EnemyController` 的基底類別，內含完整的 `TakeDamage(AttackData)` 實作
+
+---
+
 ## 目前架構總覽
 
 ```
 CombatActor（抽象基底）
 ├── PlayerController（玩家）   faction = Player
 └── EnemyBase（敵人基底）      faction = Enemy
-    └── BossController（Boss）  受傷音效 + 冰凍速度
+    └── BossController（Boss）  受傷音效 + 冰凍速度（0.8f）
+
+Enemy（舊版基底，OLDEnemy.cs）
+└── EnemyController（薄封裝，直接呼叫 start/update/lateUpdate）
 
 AttackData（傷害資料）
 ├── attacker       : GameObject
-├── attackerFaction: Faction（Player / Enemy）
+├── attackerFaction: Faction（Player / Enemy / Neutral）
 ├── damage         : float
 ├── position       : Vector3（用於擊退方向）
 ├── type           : AttackType（normal / frozen / ...）
 └── strength       : int（擊退強度）
 
-PlayerAttack（SMB）──→ PlayerWeapon ──→ target.TakeDamage(AttackData)
-                                         ├── EnemyBase（新版）
-                                         └── Enemy（舊版 fallback）
+PlayerAttack（SMB）──→ PlayerWeapon ──→ FindCombatActor() ──→ target.TakeDamage(AttackData)
+                                          └── EnemyBase（新版，僅此）
 
-EnemyAttack（SMB）──→ EnemyWeapon ──→ target.TakeDamage(AttackData)
-                                        ├── PlayerController（新版 CombatActor）
-                                        └── PlayerController（舊版 fallback）
+EnemyAttack（SMB）──→ EnemyWeapon ──→ FindCombatActor() ──→ target.TakeDamage(AttackData)
+   └── 只找 EnemyBase               └── 只找 EnemyBase owner      └── CombatActor（新版，僅此）
 
-EnemyRotate（SMB）──→ 攻擊時強制朝向玩家，相容新舊 Enemy
+EnemyRotate（SMB）──→ 攻擊時強制朝向玩家
+   ├── 新版：EnemyBase.allowRotate
+   └── 舊版 fallback：Enemy.AllowRotate（仍保留）
 ```
 
 ---
@@ -160,20 +180,23 @@ EnemyRotate（SMB）──→ 攻擊時強制朝向玩家，相容新舊 Enemy
 | `Assets/Script/NEW/AttackData.cs` | 傷害資料結構 |
 | `Assets/Script/NEW/CombatActor.cs` | 抽象基底：HP、受傷、死亡、特效 |
 | `Assets/Script/NEW/EnemyBase.cs` | 新版敵人基底：NavMesh + 攻擊 AI |
-| `Assets/Script/Enemy/Enemy.cs` | 舊版敵人（仍在使用中，漸進棄用） |
-| `Assets/Script/Enemy/BossController.cs` | Boss：繼承 EnemyBase，加受傷音效 |
-| `Assets/Script/Enemy/EnemyWeapon.cs` | 敵人武器：相容新舊 owner，打擊玩家 |
-| `Assets/Script/Enemy/EnemyAttack.cs` | 敵人攻擊 SMB：相容新舊 owner，控制傷害窗口 |
-| `Assets/Script/Enemy/EnemyRotate.cs` | 攻擊時朝向玩家的 SMB |
-| `Assets/Script/Player/PlayerController.cs` | 玩家：繼承 CombatActor，觸控移動 |
-| `Assets/Script/Player/PlayerWeapon.cs` | 玩家武器：相容新舊目標，打擊敵人 |
+| `Assets/Script/Enemy/OLDEnemy.cs` | 舊版敵人基底（原 Enemy.cs，class 名稱保持 `Enemy`，漸進棄用） |
+| `Assets/Script/Enemy/EnemyController.cs` | 舊版敵人薄封裝：繼承 `Enemy`，驅動 Update / LateUpdate |
+| `Assets/Script/Enemy/BossController.cs` | Boss：繼承 EnemyBase，加受傷音效 + 冰凍速度 0.8f |
+| `Assets/Script/Enemy/EnemyWeapon.cs` | 敵人武器：僅使用 EnemyBase，打擊 CombatActor 目標 |
+| `Assets/Script/Enemy/EnemyAttack.cs` | 敵人攻擊 SMB：僅使用 EnemyBase，控制傷害窗口 |
+| `Assets/Script/Enemy/EnemyRotate.cs` | 攻擊時朝向玩家的 SMB，仍保留舊版 Enemy fallback |
+| `Assets/Script/Player/PlayerController.cs` | 玩家：繼承 CombatActor，觸控移動 + 翻滾 |
+| `Assets/Script/Player/PlayerWeapon.cs` | 玩家武器：僅使用 CombatActor，打擊敵人 |
 | `Assets/Script/Player/PlayerAttack.cs` | 玩家攻擊 SMB：控制傷害窗口 |
+| `Assets/Script/Player/RotatableMotion.cs` | 觸控旋轉輔助 |
 
 ---
 
 ## 後續可擴充方向
 
+- `EnemyRotate` 的舊版 `Enemy` fallback 可在確認所有 prefab 已換成 `EnemyBase` 後移除
+- `OLDEnemy.cs` / `EnemyController.cs` 完全棄用後可整體刪除，徹底清除舊系統
 - 新增 `AttackType`（毒、燃燒、閃電等）只需擴充 enum，無需改武器邏輯
-- 場景 prefab 完全換成 `EnemyBase` 後，可移除舊 `Enemy` 相容的 fallback 程式碼
-- 舊 `Attack` struct 可在確認無殘餘依賴後移除
 - 可加入傷害數字 UI、傷害事件（UnityEvent）等，只需在 `CombatActor.TakeDamage` 內擴充
+- 舊 `Attack` struct（`Assets/Script/Attack.cs`）確認無殘餘依賴後可移除
