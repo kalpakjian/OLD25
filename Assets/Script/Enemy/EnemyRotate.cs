@@ -3,28 +3,22 @@ using UnityEngine;
 public class EnemyRotate : StateMachineBehaviour
 {
     EnemyBase enemyBase;
-    Enemy enemyLegacy;
     Transform player;
 
-    bool HasOwner => enemyBase != null || enemyLegacy != null;
+    bool HasOwner => enemyBase != null;
 
-    Transform OwnerTransform =>
-        enemyBase != null ? enemyBase.transform :
-        enemyLegacy != null ? enemyLegacy.transform :
-        null;
+    Transform OwnerTransform => enemyBase != null ? enemyBase.transform : null;
 
     bool AllowRotate
     {
         get
         {
             if (enemyBase != null) return enemyBase.allowRotate;
-            if (enemyLegacy != null) return enemyLegacy.AllowRotate;
             return true;
         }
         set
         {
             if (enemyBase != null) enemyBase.allowRotate = value;
-            if (enemyLegacy != null) enemyLegacy.AllowRotate = value;
         }
     }
 
@@ -35,18 +29,10 @@ public class EnemyRotate : StateMachineBehaviour
         if (enemyBase == null && animator.transform.root != null)
             enemyBase = animator.transform.root.GetComponentInChildren<EnemyBase>(true);
 
-        if (enemyBase == null)
-        {
-            enemyLegacy = animator.GetComponent<Enemy>();
-            if (enemyLegacy == null) enemyLegacy = animator.GetComponentInParent<Enemy>();
-            if (enemyLegacy == null && animator.transform.root != null)
-                enemyLegacy = animator.transform.root.GetComponentInChildren<Enemy>(true);
-        }
-
         GameObject playerObj = GameObject.FindWithTag("Player");
         player = playerObj != null ? playerObj.transform : null;
 
-        Debug.Log($"[EnemyRotate] enter, enemyBase={(enemyBase ? enemyBase.name : "NULL")}, enemyLegacy={(enemyLegacy ? enemyLegacy.name : "NULL")}, player={(player ? player.name : "NULL")}");
+        Debug.Log($"[EnemyRotate] enter, enemyBase={(enemyBase ? enemyBase.name : "NULL")}, player={(player ? player.name : "NULL")}");
 
         if (!HasOwner) return;
         AllowRotate = false;

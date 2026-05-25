@@ -532,6 +532,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 141788, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 431366, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -612,42 +616,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 481590, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
   m_PrefabInstance: {fileID: 1270083107}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &197464505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197464499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c017210df321d50419a7214b1617292c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  traceRange: 5
-  attackRange: 2
-  attackInterval: 2
-  power: 1
-  maxHP: 100
-  hurtInterval: 0.3
-  AllowRotate: 1
-  rewardItem: {fileID: 3246601390664572164, guid: ed0084702e63fc848b9900ea6d27c14f, type: 3}
-  faction: 1
-  dieEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1277323136}
-        m_TargetAssemblyTypeName: CumulativeEvent, Assembly-CSharp
-        m_MethodName: AddPoint
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!195 &197464506
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -670,6 +638,42 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &197464511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197464499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 610ec37553cda1d4c896799047da535f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faction: 2
+  power: 1
+  maxHP: 200
+  hurtInterval: 0.3
+  allowRotate: 1
+  dieEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1277323136}
+        m_TargetAssemblyTypeName: CumulativeEvent, Assembly-CSharp
+        m_MethodName: AddPoint
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  traceRange: 5
+  attackRange: 2
+  attackInterval: 2
+  rewardItem: {fileID: 0}
 --- !u!1 &218157149 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: eeb70e4e2adf2fe498b2c41496426541, type: 3}
@@ -924,7 +928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
-  weaponDamage: 0
+  weaponDamage: 10
   type: 0
   strength: 1
 --- !u!1 &524566182
@@ -1094,6 +1098,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 141788, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 431366, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1255,18 +1263,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53ea67ad86df41419e105bd595d0505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traceRange: 5
-  attackRange: 2
-  attackInterval: 3
+  faction: 1
   power: 2
   maxHP: 200
   hurtInterval: 0.3
-  AllowRotate: 1
-  rewardItem: {fileID: 0}
-  faction: 1
+  allowRotate: 1
   dieEvent:
     m_PersistentCalls:
       m_Calls: []
+  traceRange: 5
+  attackRange: 2
+  attackInterval: 3
+  rewardItem: {fileID: 0}
   hurtSound: {fileID: 8300000, guid: 35fbd212d15bbbd4e86c15f35b7d2e1d, type: 3}
 --- !u!4 &699668942 stripped
 Transform:
@@ -1421,16 +1429,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c3112d25e19fb4f8ef2128e72127ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
+  power: 1
+  maxHP: 200
+  hurtInterval: 0.3
+  allowRotate: 1
+  dieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   rotSpeed: 30
   moveSensitivity: 5
   tapSensitivity: 2
-  AllowRotate: 1
   NextAttack: 1
-  power: 1
-  faction: 0
-  maxHP: 200
-  hurtInterval: 0.3
-  frozenAnimSpeed: 0.7
 --- !u!82 &884804965
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2291,7 +2301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
-  weaponDamage: 0
+  weaponDamage: 10
   type: 0
   strength: 1
 --- !u!1001 &1521556747
@@ -2894,6 +2904,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 141788, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 431366, guid: 2608ffc940098ff43a20d61a002760a4, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3072,7 +3086,12 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1864190796
+--- !u!4 &1864190801 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 481590, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
+  m_PrefabInstance: {fileID: 1462108577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1864190806
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3081,18 +3100,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1864190794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c017210df321d50419a7214b1617292c, type: 3}
+  m_Script: {fileID: 11500000, guid: 610ec37553cda1d4c896799047da535f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traceRange: 5
-  attackRange: 2
-  attackInterval: 2
+  faction: 2
   power: 1
-  maxHP: 100
+  maxHP: 200
   hurtInterval: 0.3
-  AllowRotate: 1
-  rewardItem: {fileID: 3246601390664572164, guid: ed0084702e63fc848b9900ea6d27c14f, type: 3}
-  faction: 1
+  allowRotate: 1
   dieEvent:
     m_PersistentCalls:
       m_Calls:
@@ -3108,11 +3123,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!4 &1864190801 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 481590, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
-  m_PrefabInstance: {fileID: 1462108577}
-  m_PrefabAsset: {fileID: 0}
+  traceRange: 5
+  attackRange: 2
+  attackInterval: 2
+  rewardItem: {fileID: 0}
 --- !u!1 &2060910883
 GameObject:
   m_ObjectHideFlags: 0
