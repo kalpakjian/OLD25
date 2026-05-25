@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -403,6 +402,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.274348, y: 0.5100002, z: -1.23}
   m_LocalScale: {x: 1, y: 1, z: 8}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
@@ -426,6 +426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 0
   weaponDamage: 0
+  type: 0
+  strength: 1
 --- !u!1 &169196916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 101250, guid: e9e55f3e0804af4478cfb10a70247ddb, type: 3}
@@ -477,6 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -509,6 +512,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -628,6 +632,7 @@ MonoBehaviour:
   hurtInterval: 0.3
   AllowRotate: 1
   rewardItem: {fileID: 3246601390664572164, guid: ed0084702e63fc848b9900ea6d27c14f, type: 3}
+  faction: 1
   dieEvent:
     m_PersistentCalls:
       m_Calls:
@@ -696,7 +701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
-  weaponDamage: 0
+  weaponDamage: 100
   type: 0
   strength: 0
 --- !u!1 &311416773
@@ -738,6 +743,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1558282, y: 0.75682163, z: -0.3159771}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -919,6 +925,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 0
   weaponDamage: 0
+  type: 0
+  strength: 1
 --- !u!1 &524566182
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,6 +993,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2137706827}
   m_RootOrder: 0
@@ -1022,6 +1031,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1489972273}
   m_RootOrder: 2
@@ -1253,6 +1263,7 @@ MonoBehaviour:
   hurtInterval: 0.3
   AllowRotate: 1
   rewardItem: {fileID: 0}
+  faction: 1
   dieEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1291,6 +1302,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1489972273}
   m_RootOrder: 4
@@ -1415,6 +1427,10 @@ MonoBehaviour:
   AllowRotate: 1
   NextAttack: 1
   power: 1
+  faction: 0
+  maxHP: 200
+  hurtInterval: 0.3
+  frozenAnimSpeed: 0.7
 --- !u!82 &884804965
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1776,6 +1792,7 @@ Transform:
   m_LocalRotation: {x: 0.47715867, y: 0, z: 0, w: 0.8788172}
   m_LocalPosition: {x: 0, y: 7, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1970,6 +1987,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.894772, y: 1.31, z: -1.7914128}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14
@@ -2238,6 +2256,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2137706827}
   - {fileID: 2091751716}
@@ -2273,6 +2292,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 0
   weaponDamage: 0
+  type: 0
+  strength: 1
 --- !u!1001 &1521556747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2441,6 +2462,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -2455,6 +2477,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1489972273}
   m_Father: {fileID: 0}
@@ -2495,6 +2518,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1489972273}
   m_RootOrder: 6
@@ -2662,6 +2686,7 @@ Transform:
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -2700,6 +2725,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2060910884}
   m_Father: {fileID: 1489972273}
@@ -2790,6 +2816,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1489972273}
   m_RootOrder: 5
@@ -3065,6 +3092,7 @@ MonoBehaviour:
   hurtInterval: 0.3
   AllowRotate: 1
   rewardItem: {fileID: 3246601390664572164, guid: ed0084702e63fc848b9900ea6d27c14f, type: 3}
+  faction: 1
   dieEvent:
     m_PersistentCalls:
       m_Calls:
@@ -3114,6 +3142,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1644501070}
   m_RootOrder: 0
@@ -3204,6 +3233,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1489972273}
   m_RootOrder: 1
@@ -3280,6 +3310,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 524566185}
   m_Father: {fileID: 1489972273}

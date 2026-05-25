@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 
-public class BossController : Enemy
+[RequireComponent(typeof(AudioSource))]
+public class BossController : EnemyBase
 {
-    AudioSource AS;
+    AudioSource audioSource;
     public AudioClip hurtSound;
 
-    void Start ()
+    protected override void Awake()
     {
-        start();
-        AS = GetComponent<AudioSource>();
+        base.Awake();
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override float GetFrozenAnimSpeed()
@@ -18,17 +19,9 @@ public class BossController : Enemy
 
     protected override void OnTakeDamage(AttackData attack)
     {
-        if (AS && hurtSound)
-            AS.PlayOneShot(hurtSound);
-    }
+        base.OnTakeDamage(attack);
 
-    void Update ()
-    {
-        update();
-    }
-
-    void LateUpdate()
-    {
-        lateUpdate();
+        if (audioSource && hurtSound)
+            audioSource.PlayOneShot(hurtSound);
     }
 }
