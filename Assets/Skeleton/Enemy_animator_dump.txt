@@ -1,0 +1,135 @@
+﻿========================================
+Animator Controller Export
+========================================
+Name: Enemy
+Path: Assets/Skeleton/Enemy.controller
+
+Parameters
+----------------------------------------
+- walk : Bool  default=False
+- attack : Trigger  default=(trigger)
+- hurt : Trigger  default=(trigger)
+- die : Trigger  default=(trigger)
+
+========================================
+Layer 0: Base Layer
+========================================
+StateMachine: Base Layer
+  DefaultState: idle
+  Any State Transitions:
+    - AnyState -> hurt
+      HasExitTime: False
+      ExitTime: 0.75
+      Duration: 0.25
+      Offset: 0
+      InterruptionSource: None
+      OrderedInterruption: True
+      CanTransitionToSelf: True
+      Conditions:
+        - hurt If 0
+    - AnyState -> death
+      HasExitTime: False
+      ExitTime: 0.75
+      Duration: 0.25
+      Offset: 0
+      InterruptionSource: None
+      OrderedInterruption: True
+      CanTransitionToSelf: True
+      Conditions:
+        - die If 0
+  States:
+    - idle
+      Motion: idle
+      Speed: 1
+      WriteDefaultValues: True
+      Transitions:
+        - idle -> walk
+          HasExitTime: False
+          ExitTime: 0.875
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - walk If 0
+        - idle -> attack
+          HasExitTime: False
+          ExitTime: 0.875
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
+    - walk
+      Motion: walk
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - EnemyRotate
+      Transitions:
+        - walk -> attack
+          HasExitTime: False
+          ExitTime: 0.688
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
+        - walk -> idle
+          HasExitTime: False
+          ExitTime: 0.688
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - walk IfNot 0
+    - attack
+      Motion: attack
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - EnemyRotate
+        - AnimationSound
+        - EnemyAttack
+        - AttackEffect
+      Transitions:
+        - attack -> idle
+          HasExitTime: True
+          ExitTime: 0.813
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+    - hurt
+      Motion: hurt
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - EnemyRotate
+        - AnimationSound
+      Transitions:
+        - hurt -> idle
+          HasExitTime: True
+          ExitTime: 0.531
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+    - death
+      Motion: death
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+

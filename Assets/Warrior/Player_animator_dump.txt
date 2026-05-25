@@ -1,0 +1,193 @@
+﻿========================================
+Animator Controller Export
+========================================
+Name: Player
+Path: Assets/Warrior/Player.controller
+
+Parameters
+----------------------------------------
+- speed : Float  default=0
+- attack : Trigger  default=(trigger)
+- roll : Trigger  default=(trigger)
+- hurt : Trigger  default=(trigger)
+- die : Trigger  default=(trigger)
+
+========================================
+Layer 0: Base Layer
+========================================
+StateMachine: Base Layer
+  DefaultState: move
+  Any State Transitions:
+    - AnyState -> hurt
+      HasExitTime: False
+      ExitTime: 0.75
+      Duration: 0.25
+      Offset: 0
+      InterruptionSource: None
+      OrderedInterruption: True
+      CanTransitionToSelf: True
+      Conditions:
+        - hurt If 0
+    - AnyState -> die
+      HasExitTime: False
+      ExitTime: 0.75
+      Duration: 0.25
+      Offset: 0
+      InterruptionSource: None
+      OrderedInterruption: True
+      CanTransitionToSelf: True
+      Conditions:
+        - die If 0
+  States:
+    - move
+      Motion: Blend Tree
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - RotatableMotion
+      Transitions:
+        - move -> attack01
+          HasExitTime: False
+          ExitTime: 0.79
+          Duration: 0.1
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
+        - move -> roll
+          HasExitTime: False
+          ExitTime: 0.79
+          Duration: 0
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - roll If 0
+    - attack01
+      Motion: meleeattack01
+      Speed: 1.5
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+        - RotatableMotion
+        - NextAttack
+        - PlayerAttack
+        - AutoTarget
+        - AttackEffect
+      Transitions:
+        - attack01 -> move
+          HasExitTime: True
+          ExitTime: 0.659
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+        - attack01 -> attack02
+          HasExitTime: False
+          ExitTime: 0.659
+          Duration: 0.1
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
+    - attack02
+      Motion: meleeattack02
+      Speed: 1.5
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+        - RotatableMotion
+        - NextAttack
+        - PlayerAttack
+        - AutoTarget
+        - AttackEffect
+      Transitions:
+        - attack02 -> attack03
+          HasExitTime: False
+          ExitTime: 0.413
+          Duration: 0.164
+          Offset: 0.021
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
+        - attack02 -> move
+          HasExitTime: True
+          ExitTime: 0.531
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+    - attack03
+      Motion: meleeattack03
+      Speed: 1.2
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+        - RotatableMotion
+        - NextAttack
+        - PlayerAttack
+        - AutoTarget
+        - AttackEffect
+      Transitions:
+        - attack03 -> move
+          HasExitTime: True
+          ExitTime: 0.5
+          Duration: 0.2
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+    - roll
+      Motion: roll
+      Speed: 2
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+        - RotatableMotion
+        - Invincible
+      Transitions:
+        - roll -> move
+          HasExitTime: True
+          ExitTime: 0.786
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+    - die
+      Motion: die
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+    - hurt
+      Motion: hurt
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - AnimationSound
+        - RotatableMotion
+      Transitions:
+        - hurt -> move
+          HasExitTime: True
+          ExitTime: 0.717
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions: (none)
+
