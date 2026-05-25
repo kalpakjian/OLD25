@@ -50,26 +50,7 @@ public class PlayerWeapon : MonoBehaviour
             return;
         }
 
-        // fallback：找舊版 Enemy
-        Enemy legacyEnemy = FindLegacyEnemy(col);
-        if (legacyEnemy != null)
-        {
-            AttackData attack = new AttackData
-            {
-                attacker = player.gameObject,
-                attackerFaction = player.faction,
-                damage = attackDamage + weaponDamage,
-                position = player.transform.position,
-                type = type,
-                strength = strength
-            };
-            Debug.Log($"[PlayerWeapon] deal {attack.damage} to {legacyEnemy.name} (Legacy Enemy)");
-            legacyEnemy.TakeDamage(attack);
-        }
-        else
-        {
-            Debug.Log($"[PlayerWeapon] no valid target found on {col.name}");
-        }
+        Debug.Log($"[PlayerWeapon] no valid target found on {col.name}");
     }
 
     CombatActor FindCombatActor(Collider col)
@@ -86,21 +67,5 @@ public class PlayerWeapon : MonoBehaviour
         if (col.transform.root != null)
             t = col.transform.root.GetComponentInChildren<CombatActor>(true);
         return t;
-    }
-
-    Enemy FindLegacyEnemy(Collider col)
-    {
-        Enemy e = col.GetComponent<Enemy>();
-        if (e != null) return e;
-        e = col.GetComponentInParent<Enemy>();
-        if (e != null) return e;
-        if (col.attachedRigidbody != null)
-        {
-            e = col.attachedRigidbody.GetComponentInParent<Enemy>();
-            if (e != null) return e;
-        }
-        if (col.transform.root != null)
-            e = col.transform.root.GetComponentInChildren<Enemy>(true);
-        return e;
     }
 }

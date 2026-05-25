@@ -9,18 +9,13 @@ public class EnemyWeapon : MonoBehaviour
 
     // 新版 EnemyBase
     EnemyBase ownerBase;
-    // 舊版 Enemy fallback
-    Enemy ownerLegacy;
 
-    GameObject OwnerGO => ownerBase != null ? ownerBase.gameObject :
-                          (ownerLegacy != null ? ownerLegacy.gameObject : null);
-
-    Transform OwnerTransform => ownerBase != null ? ownerBase.transform :
-                                (ownerLegacy != null ? ownerLegacy.transform : null);
+    GameObject OwnerGO => ownerBase != null ? ownerBase.gameObject : null;
+    Transform OwnerTransform => ownerBase != null ? ownerBase.transform : null;
 
     Faction OwnerFaction => ownerBase != null ? ownerBase.faction : Faction.Enemy;
 
-    bool HasOwner => ownerBase != null || ownerLegacy != null;
+    bool HasOwner => ownerBase != null;
 
     void Start()
     {
@@ -29,16 +24,7 @@ public class EnemyWeapon : MonoBehaviour
         if (ownerBase == null && transform.root != null)
             ownerBase = transform.root.GetComponentInChildren<EnemyBase>(true);
 
-        // 找舊版 Enemy fallback
-        if (ownerBase == null)
-        {
-            ownerLegacy = GetComponentInParent<Enemy>();
-            if (ownerLegacy == null && transform.root != null)
-                ownerLegacy = transform.root.GetComponentInChildren<Enemy>(true);
-        }
-
-        Debug.Log($"[EnemyWeapon] ownerBase={(ownerBase ? ownerBase.name : "NULL")}, " +
-                  $"ownerLegacy={(ownerLegacy ? ownerLegacy.name : "NULL")}");
+        Debug.Log($"[EnemyWeapon] ownerBase={(ownerBase ? ownerBase.name : "NULL")}");
     }
 
     void OnTriggerEnter(Collider col)
@@ -67,26 +53,7 @@ public class EnemyWeapon : MonoBehaviour
             return;
         }
 
-        // fallback：如果 PlayerController 沒繼承 CombatActor 的舊場景
-        PlayerController playerLegacy = FindPlayerController(col);
-        if (playerLegacy != null && targetActor == null)
-        {
-            AttackData attack = new AttackData
-            {
-                attacker = OwnerGO,
-                attackerFaction = OwnerFaction,
-                damage = attackDamage + weaponDamage,
-                position = OwnerTransform != null ? OwnerTransform.position : transform.position,
-                type = type,
-                strength = strength
-            };
-            Debug.Log($"[EnemyWeapon] deal {attack.damage} to {playerLegacy.name} (Legacy PlayerController)");
-            playerLegacy.TakeDamage(attack);
-        }
-        else if (targetActor == null)
-        {
-            Debug.Log($"[EnemyWeapon] no valid target found on {col.name}");
-        }
+        Debug.Log($"[EnemyWeapon] no valid target found on {col.name}");
     }
 
     CombatActor FindCombatActor(Collider col)
@@ -103,21 +70,5 @@ public class EnemyWeapon : MonoBehaviour
         if (col.transform.root != null)
             t = col.transform.root.GetComponentInChildren<CombatActor>(true);
         return t;
-    }
-
-    PlayerController FindPlayerController(Collider col)
-    {
-        PlayerController p = col.GetComponent<PlayerController>();
-        if (p != null) return p;
-        p = col.GetComponentInParent<PlayerController>();
-        if (p != null) return p;
-        if (col.attachedRigidbody != null)
-        {
-            p = col.attachedRigidbody.GetComponentInParent<PlayerController>();
-            if (p != null) return p;
-        }
-        if (col.transform.root != null)
-            p = col.transform.root.GetComponentInChildren<PlayerController>(true);
-        return p;
     }
 }

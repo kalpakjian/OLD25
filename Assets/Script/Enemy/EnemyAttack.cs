@@ -10,13 +10,10 @@ public class EnemyAttack : StateMachineBehaviour
 
     // 新版 EnemyBase
     EnemyBase enemyBase;
-    // 舊版 Enemy fallback
-    Enemy enemyLegacy;
 
     EnemyWeapon weapon;
 
-    float OwnerPower => enemyBase != null ? enemyBase.power :
-                        (enemyLegacy != null ? enemyLegacy.power : 1f);
+    float OwnerPower => enemyBase != null ? enemyBase.power : 1f;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -26,22 +23,12 @@ public class EnemyAttack : StateMachineBehaviour
         if (enemyBase == null && animator.transform.root != null)
             enemyBase = animator.transform.root.GetComponentInChildren<EnemyBase>(true);
 
-        // 找舊版 Enemy fallback
-        if (enemyBase == null)
-        {
-            enemyLegacy = animator.GetComponent<Enemy>();
-            if (enemyLegacy == null) enemyLegacy = animator.GetComponentInParent<Enemy>();
-            if (enemyLegacy == null && animator.transform.root != null)
-                enemyLegacy = animator.transform.root.GetComponentInChildren<Enemy>(true);
-        }
-
         // 找 EnemyWeapon
         weapon = animator.GetComponentInChildren<EnemyWeapon>(true);
         if (weapon == null && animator.transform.root != null)
             weapon = animator.transform.root.GetComponentInChildren<EnemyWeapon>(true);
 
         Debug.Log($"[EnemyAttack] enter, enemyBase={(enemyBase ? enemyBase.name : "NULL")}, " +
-                  $"enemyLegacy={(enemyLegacy ? enemyLegacy.name : "NULL")}, " +
                   $"weapon={(weapon ? weapon.name : "NULL")}");
 
         if (weapon != null)
@@ -54,7 +41,7 @@ public class EnemyAttack : StateMachineBehaviour
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (weapon == null) return;
-        if (enemyBase == null && enemyLegacy == null) return;
+        if (enemyBase == null) return;
 
         if (stateInfo.normalizedTime > start && stateInfo.normalizedTime < end)
             weapon.attackDamage = damage * OwnerPower;
