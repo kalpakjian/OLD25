@@ -1,41 +1,48 @@
 ﻿using UnityEngine;
 
-public class PlayerWeapon : MonoBehaviour {
+public class PlayerWeapon : MonoBehaviour
+{
+    [HideInInspector]
+    public float attackDamage;
+    public float weaponDamage;
 
-	[HideInInspector]
-	public float attackDamage;
-	public float weaponDamage;
-	[HideInInspector]
-	public AttackType type;
-	[HideInInspector]
-	public int strength;
+    [HideInInspector]
+    public AttackType type;
+    [HideInInspector]
+    public int strength;
 
-	Transform player;
+    PlayerController player;
 
-	Attack attack = new Attack();
+    void Start()
+    {
+        player = GetComponentInParent<PlayerController>();
+        if (!player)
+            player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+    }
 
-	void Start() {
-		player = GameObject.FindWithTag("Player").transform;
-	}
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Treasure") && attackDamage > 0)
+            col.SendMessage("Hit");
 
-	void OnTriggerEnter (Collider col) {
+        if (!col.CompareTag("Enemy") || attackDamage <= 0)
+            return;
 
-		if (col.CompareTag("Treasure") && attackDamage > 0)
-			col.SendMessage("Hit");
+        Enemy enemy = col.GetComponent<Enemy>();
+        if (!enemy)
+            enemy = col.GetComponentInParent<Enemy>();
 
-		if (col.CompareTag("Enemy") && attackDamage > 0)
-		{
+        if (enemy)
+        {
+            AttackData attack = new AttackData();
+            attack.attacker = player ? player.gameObject : gameObject;
+            attack.attackerFaction = Faction.Player;
+            attack.damage = attackDamage + weaponDamage;
+            attack.position = player ? player.transform.position : transform.position;
+            attack.type = type;
+            attack.strength = strength;
 
-			attack.damage = attackDamage + weaponDamage;
-			attack.position = player.position;
-			attack.type = type;
-			attack.strength = strength;
-
-			col.SendMessage("Hurt", attack);
-		}
-
-
-	}
+            enemy.TakeDamage(attack);
+        }
+    }
 }
-
-
