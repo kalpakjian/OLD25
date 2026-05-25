@@ -24,14 +24,28 @@ public class PlayerController : MonoBehaviour
 
 	public float power = 1;
 
+	public Faction faction = Faction.Player;
+	public float maxHP = 200;
+	public float hurtInterval = 0.3f;
+
+	float HP;
+	bool dead;
+	float nextHurtTime = 0;
+
+	public float frozenAnimSpeed = 0.7f;
+
 	void Start()
 	{
 		anim = GetComponent<Animator>();
 		screenDiagonal = Mathf.Sqrt(Mathf.Pow(Screen.width, 2) + Mathf.Pow(Screen.height, 2));
+		HP = maxHP;
+		dead = false;
 	}
 
 	void Update()
 	{
+		if (dead) return;
+
 		if (Input.touchCount == 1)
 		{
 			Touch touch = Input.GetTouch(0);
@@ -87,5 +101,66 @@ public class PlayerController : MonoBehaviour
 	void LateUpdate()
 	{
 		anim.ResetTrigger("attack");
+	}
+
+	public void Hurt(float damage)
+	{
+		AttackData attack = new AttackData();
+		attack.attacker = null;
+		attack.attackerFaction = Faction.Enemy;
+		attack.damage = damage;
+		attack.position = transform.position;
+		attack.type = AttackType.normal;
+		attack.strength = 0;
+
+		TakeDamage(attack);
+	}
+
+	public virtual void TakeDamage(AttackData attack)
+	{
+		if (dead || Time.time < nextHurtTime)
+			return;
+
+		HP -= attack.damage;
+
+		if (HP <= 0)
+		{
+			Die();
+			return;
+		}
+
+		anim.SetTrigger("hurt");
+
+		if (attack.strength > 0)
+		{
+			Rigidbody rb = GetComponent<Rigidbody>();
+			if (rb)
+			{
+				Vector3 pushBack = (transform.position - attack.position).normalized;
+				pushBack *= attack.strength;
+				rb.AddForce(pushBack * 10, ForceMode.Impulse);
+			}
+		}
+
+		if (attack.type == AttackType.frozen)
+		{
+			anim.speed = frozenAnimSpeed;
+			Invoke("RecoverStatus", 5f);
+		}
+
+		nextHurtTime = Time.time + hurtInterval;
+	}
+
+	void RecoverStatus()
+	{
+		anim.speed = 1f;
+	}
+
+	void Die()
+	{
+		dead = true;
+		AllowRotate = false;
+		NextAttack = false;
+		anim.SetTrigger("die");
 	}
 }
