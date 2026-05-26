@@ -19,6 +19,9 @@ public class CombatRotate : StateMachineBehaviour
     [Tooltip("進入狀態時，立即面向目標（玩家→最近存活敵人；敵人→玩家）")]
     public bool faceTargetOnEnter = false;
 
+    [Tooltip("尋找目標的最大距離（0 = 不限制）")]
+    public float maxRange = 0f;
+
     [Tooltip("進入狀態時呼叫 PlayerController.RotateChar()，依觸控拖曳方向旋轉（Roll 動畫用，僅玩家有效）")]
     public bool changeDirection = false;
 
@@ -114,8 +117,8 @@ public class CombatRotate : StateMachineBehaviour
 
         if (isPlayer)
         {
-            // 玩家 → 最近的存活敵人
-            target = FindNearestEnemy(ownerTransform);
+            // 玩家 → 最近的存活敵人（可選範圍限制）
+            target = FindNearestEnemy(ownerTransform, maxRange);
         }
         else
         {
@@ -138,8 +141,8 @@ public class CombatRotate : StateMachineBehaviour
             self.rotation = UnityEngine.Quaternion.Slerp(self.rotation, rot, UnityEngine.Time.deltaTime * slerpSpeed);
     }
 
-    /// <summary>找出距 origin 最近的存活敵人</summary>
-    static Transform FindNearestEnemy(Transform origin)
+    /// <summary>找出距 origin 最近的存活敵人。range ≤ 0 代表不限距離。</summary>
+    static Transform FindNearestEnemy(Transform origin, float range = 0f)
     {
 #if UNITY_2023_1_OR_NEWER
         EnemyBase[] enemies = Object.FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
@@ -148,11 +151,13 @@ public class CombatRotate : StateMachineBehaviour
 #endif
         Transform nearest = null;
         float minDist = float.MaxValue;
+        bool useRange = range > 0f;
 
         foreach (var e in enemies)
         {
             if (e.IsDead) continue;
             float dist = UnityEngine.Vector3.Distance(origin.position, e.transform.position);
+            if (useRange && dist > range) continue;
             if (dist < minDist)
             {
                 minDist = dist;
