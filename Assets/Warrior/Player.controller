@@ -17,9 +17,9 @@ AnimatorState:
   - {fileID: 3932078567514562734}
   - {fileID: 2577103822186350234}
   - {fileID: -1997252105871077062}
-  - {fileID: 3401383919236809874}
   - {fileID: 8177809258212324486}
   - {fileID: 4616612751295269717}
+  - {fileID: 7759907465841784611}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -89,23 +89,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 771e5405fa4d86a4c86b2d99ec7b499f, type: 3}
   - {fileID: 8300000, guid: 8fcac64bc3818d242ac5b24fe3e4ac1d, type: 3}
   - {fileID: 8300000, guid: 498ae161896ce0d4597100d92d93d993, type: 3}
---- !u!114 &-6689143542149269661
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18be0c20df4102f4d99ffe7a41b42d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 20
-  type: 1
-  strength: 5
-  start: 0.1
-  end: 0.5
 --- !u!114 &-6022984204226432162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,6 +103,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - {fileID: 8300000, guid: 479d1abc04129bd4b8f45e23c4c62a78, type: 3}
+--- !u!114 &-5446726385929561869
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36eea3c834a855d418a92033374a74f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
+  type: 1
+  strength: 5
+  start: 0.1
+  end: 0.5
 --- !u!114 &-5353386019414547865
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -550,9 +550,9 @@ AnimatorState:
   - {fileID: -6815420695117384385}
   - {fileID: 6181579938766594146}
   - {fileID: -1360717042778517893}
-  - {fileID: 5764876693056878861}
   - {fileID: -7130903939310276106}
   - {fileID: -5353386019414547865}
+  - {fileID: 1568419878601863707}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -567,6 +567,23 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &1568419878601863707
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36eea3c834a855d418a92033374a74f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  type: 0
+  strength: 1
+  start: 0
+  end: 0.7
 --- !u!114 &2577103822186350234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -677,23 +694,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &3401383919236809874
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18be0c20df4102f4d99ffe7a41b42d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
-  type: 0
-  strength: 1
-  start: 0
-  end: 0.7
 --- !u!1102 &3632412119295765106
 AnimatorState:
   serializedVersion: 6
@@ -808,9 +808,9 @@ AnimatorState:
   - {fileID: 4199489332462641029}
   - {fileID: 427737676184898387}
   - {fileID: -2936601606665583588}
-  - {fileID: -6689143542149269661}
   - {fileID: 3076243265338472536}
   - {fileID: 6910693143660933981}
+  - {fileID: -5446726385929561869}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -854,23 +854,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &5764876693056878861
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18be0c20df4102f4d99ffe7a41b42d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 15
-  type: 0
-  strength: 1
-  start: 0
-  end: 0.7
 --- !u!114 &6181579938766594146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -898,6 +881,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FX: {fileID: 2005808698027637327, guid: 691bd4953ed6c934d9bfa8ad688cf843, type: 3}
+--- !u!114 &7759907465841784611
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36eea3c834a855d418a92033374a74f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  type: 0
+  strength: 1
+  start: 0
+  end: 0.7
 --- !u!114 &8177809258212324486
 MonoBehaviour:
   m_ObjectHideFlags: 1
