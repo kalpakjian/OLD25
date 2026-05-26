@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -17,9 +18,14 @@ public class WeaponHitbox : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool logHit = true;
     [SerializeField] private bool logInvalidHit = false;
+    [SerializeField] private bool logRepeatBlocked = false;
 
     /// <summary>擁有者（PlayerController 或 EnemyBase 皆可，兩者都是 CombatActor）</summary>
     protected CombatActor owner;
+
+    // 同一攻擊窗口內已命中的目標
+    private readonly HashSet<CombatActor> hitTargets = new HashSet<CombatActor>();
+    private bool wasAttacking = false;
 
     protected virtual void Start()
     {
@@ -30,17 +36,32 @@ public class WeaponHitbox : MonoBehaviour
         Debug.Log($"[WeaponHitbox] {name} owner = {(owner ? owner.name : "NULL")} ({owner?.GetType().Name})");
     }
 
+    protected virtual void Update()
+    {
+        bool isAttacking = attackDamage > 0f;
+
+        // 攻擊窗口剛開始
+        if (isAttacking && !wasAttacking)
+        {
+            hitTargets.Clear();
+        }
+        // 攻擊窗口剛結束
+        else if (!isAttacking && wasAttacking)
+        {
+            hitTargets.Clear();
+        }
+
+        wasAttacking = isAttacking;
+    }
+
     protected virtual void OnTriggerEnter(Collider col)
     {
-        // 先排除無效狀態，避免 atk=0 時也狂刷 log
         if (attackDamage <= 0 || owner == null)
             return;
 
-        // 忽略自己或自己身上的子物件
         if (col.transform.root == owner.transform.root)
             return;
 
-        // 寶箱碰撞（只有允許的武器才處理）
         if (canHitTreasure && col.CompareTag("Treasure"))
         {
             if (logHit)
@@ -54,6 +75,16 @@ public class WeaponHitbox : MonoBehaviour
 
         if (targetActor != null && targetActor.faction != owner.faction)
         {
+            // 同一攻擊窗口內，已打過就不再重複扣血
+            if (hitTargets.Contains(targetActor))
+            {
+                if (logRepeatBlocked)
+                    Debug.Log($"[WeaponHitbox] repeat blocked on {targetActor.name}");
+                return;
+            }
+
+            hitTargets.Add(targetActor);
+
             AttackData attack = new AttackData
             {
                 attacker = owner.gameObject,
