@@ -19,13 +19,16 @@ public class WeaponHitbox : MonoBehaviour
     [SerializeField] private bool logHit = true;
     [SerializeField] private bool logInvalidHit = false;
     [SerializeField] private bool logRepeatBlocked = false;
+    [SerializeField] private bool logPhaseChange = false;
 
     /// <summary>擁有者（PlayerController 或 EnemyBase 皆可，兩者都是 CombatActor）</summary>
     protected CombatActor owner;
 
-    // 同一攻擊窗口內已命中的目標
-    private readonly HashSet<CombatActor> hitTargets = new HashSet<CombatActor>();
+    // 同一 phase 內已命中的目標
+    private readonly HashSet<CombatActor> hitTargetsInPhase = new HashSet<CombatActor>();
+
     private bool wasAttacking = false;
+    private float currentPhaseDamage = -1f;
 
     protected virtual void Start()
     {
@@ -40,18 +43,29 @@ public class WeaponHitbox : MonoBehaviour
     {
         bool isAttacking = attackDamage > 0f;
 
-        // 攻擊窗口剛開始
-        if (isAttacking && !wasAttacking)
+        if (!isAttacking)
         {
-            hitTargets.Clear();
-        }
-        // 攻擊窗口剛結束
-        else if (!isAttacking && wasAttacking)
-        {
-            hitTargets.Clear();
+            if (wasAttacking)
+            {
+                hitTargetsInPhase.Clear();
+                currentPhaseDamage = -1f;
+            }
+
+            wasAttacking = false;
+            return;
         }
 
-        wasAttacking = isAttacking;
+        // 攻擊剛開始，或 phase damage 改變時，視為新 phase
+        if (!wasAttacking || !Mathf.Approximately(currentPhaseDamage, attackDamage))
+        {
+            currentPhaseDamage = attackDamage;
+            hitTargetsInPhase.Clear();
+
+            if (logPhaseChange)
+                Debug.Log($"[WeaponHitbox] {name} new phase, atk={currentPhaseDamage}");
+        }
+
+        wasAttacking = true;
     }
 
     protected virtual void OnTriggerEnter(Collider col)
@@ -75,15 +89,15 @@ public class WeaponHitbox : MonoBehaviour
 
         if (targetActor != null && targetActor.faction != owner.faction)
         {
-            // 同一攻擊窗口內，已打過就不再重複扣血
-            if (hitTargets.Contains(targetActor))
+            // 同一個 phase 內只命中一次
+            if (hitTargetsInPhase.Contains(targetActor))
             {
                 if (logRepeatBlocked)
-                    Debug.Log($"[WeaponHitbox] repeat blocked on {targetActor.name}");
+                    Debug.Log($"[WeaponHitbox] repeat blocked in same phase on {targetActor.name}, atk={attackDamage}");
                 return;
             }
 
-            hitTargets.Add(targetActor);
+            hitTargetsInPhase.Add(targetActor);
 
             AttackData attack = new AttackData
             {
@@ -96,7 +110,7 @@ public class WeaponHitbox : MonoBehaviour
             };
 
             if (logHit)
-                Debug.Log($"[WeaponHitbox] {name} hit {col.name}, tag={col.tag}, deal {attack.damage} to {targetActor.name}");
+                Debug.Log($"[WeaponHitbox] {name} hit {col.name}, tag={col.tag}, phaseAtk={attackDamage}, deal {attack.damage} to {targetActor.name}");
 
             targetActor.TakeDamage(attack);
             return;
