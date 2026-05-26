@@ -81,8 +81,6 @@ public abstract class CombatActor : MonoBehaviour
 
     public virtual void TakeDamage(AttackData attack)
     {
-        Debug.Log($"[TakeDamage] {name} take {attack.damage} from {(attack.attacker ? attack.attacker.name : "NULL")}");
-
         if (dead || Time.time < nextHurtTime)
             return;
 

@@ -29,8 +29,6 @@ public class CombatAttack : StateMachineBehaviour
         if (weapon == null && animator.transform.root != null)
             weapon = animator.transform.root.GetComponentInChildren<WeaponHitbox>(true);
 
-        Debug.Log($"[CombatAttack] enter, owner={(owner ? owner.name : "NULL")}, weapon={(weapon ? weapon.name : "NULL")}");
-
         if (weapon != null)
         {
             weapon.type = type;
@@ -46,8 +44,6 @@ public class CombatAttack : StateMachineBehaviour
             weapon.attackDamage = damage * owner.power;
         else
             weapon.attackDamage = 0f;
-
-        Debug.Log($"[CombatAttack] time={stateInfo.normalizedTime:F2}, atk={weapon.attackDamage}");
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

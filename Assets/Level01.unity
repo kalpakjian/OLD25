@@ -421,13 +421,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 99631742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d47a4cdd9db004d970a20ba785113c, type: 3}
+  m_Script: {fileID: 11500000, guid: 68d9dc675e7f26649bfe4f6c6bd1e24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
-  weaponDamage: 0
+  weaponDamage: 10
   type: 0
   strength: 1
+  canHitTreasure: 0
 --- !u!1 &169196916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 101250, guid: e9e55f3e0804af4478cfb10a70247ddb, type: 3}
@@ -701,13 +702,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 218157149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cbdff177a5a68949b45e9cdfab9e231, type: 3}
+  m_Script: {fileID: 11500000, guid: 68d9dc675e7f26649bfe4f6c6bd1e24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
-  weaponDamage: 100
+  weaponDamage: 10
   type: 0
-  strength: 0
+  strength: 1
+  canHitTreasure: 1
 --- !u!1 &311416773
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,13 +926,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 451416055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d47a4cdd9db004d970a20ba785113c, type: 3}
+  m_Script: {fileID: 11500000, guid: 68d9dc675e7f26649bfe4f6c6bd1e24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
   weaponDamage: 10
   type: 0
   strength: 1
+  canHitTreasure: 0
 --- !u!1 &524566182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,6 +1380,52 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: ??? / ???
+--- !u!1 &807941826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 807941828}
+  - component: {fileID: 807941827}
+  m_Layer: 0
+  m_Name: LogCapture
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &807941827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807941826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e438550f19ce14da29a29b75ac2e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  captureStackTrace: 0
+  filterCombatOnly: 1
+--- !u!4 &807941828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807941826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884804959 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100078, guid: 27dd6b00a9cc599418bdc6cddec67697, type: 3}
@@ -2297,13 +2346,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1501194401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d47a4cdd9db004d970a20ba785113c, type: 3}
+  m_Script: {fileID: 11500000, guid: 68d9dc675e7f26649bfe4f6c6bd1e24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
   weaponDamage: 10
   type: 0
   strength: 1
+  canHitTreasure: 0
 --- !u!1001 &1521556747
 PrefabInstance:
   m_ObjectHideFlags: 0

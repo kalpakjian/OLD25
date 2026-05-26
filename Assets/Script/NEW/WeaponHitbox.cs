@@ -4,6 +4,10 @@ using UnityEngine;
 /// <summary>
 /// 共用武器碰撞邏輯。
 /// 玩家武器和敵人武器都直接使用此 Component，不再需要子類別。
+/// 支援：
+/// 1. 同一 phase 內同一目標只命中一次
+/// 2. 同一 attack cycle 內可有多個 phase 傷害
+/// 3. Treasure 與 CombatActor 都做 phase 去重
 /// </summary>
 public class WeaponHitbox : MonoBehaviour
 {
@@ -15,17 +19,14 @@ public class WeaponHitbox : MonoBehaviour
     /// <summary>是否可以打到寶箱（Player 武器需開啟）</summary>
     [SerializeField] protected bool canHitTreasure = false;
 
-    [Header("Debug")]
-    [SerializeField] private bool logHit = true;
-    [SerializeField] private bool logInvalidHit = false;
-    [SerializeField] private bool logRepeatBlocked = false;
-    [SerializeField] private bool logPhaseChange = false;
-
     /// <summary>擁有者（PlayerController 或 EnemyBase 皆可，兩者都是 CombatActor）</summary>
     protected CombatActor owner;
 
-    // 同一 phase 內已命中的目標
+    // 同一 phase 內已命中的 CombatActor
     private readonly HashSet<CombatActor> hitTargetsInPhase = new HashSet<CombatActor>();
+
+    // 同一 phase 內已命中的 Treasure Collider
+    private readonly HashSet<Collider> hitTreasuresInPhase = new HashSet<Collider>();
 
     private bool wasAttacking = false;
     private float currentPhaseDamage = -1f;
@@ -35,8 +36,6 @@ public class WeaponHitbox : MonoBehaviour
         owner = GetComponentInParent<CombatActor>();
         if (owner == null && transform.root != null)
             owner = transform.root.GetComponentInChildren<CombatActor>(true);
-
-        Debug.Log($"[WeaponHitbox] {name} owner = {(owner ? owner.name : "NULL")} ({owner?.GetType().Name})");
     }
 
     protected virtual void Update()
@@ -48,6 +47,7 @@ public class WeaponHitbox : MonoBehaviour
             if (wasAttacking)
             {
                 hitTargetsInPhase.Clear();
+                hitTreasuresInPhase.Clear();
                 currentPhaseDamage = -1f;
             }
 
@@ -60,9 +60,7 @@ public class WeaponHitbox : MonoBehaviour
         {
             currentPhaseDamage = attackDamage;
             hitTargetsInPhase.Clear();
-
-            if (logPhaseChange)
-                Debug.Log($"[WeaponHitbox] {name} new phase, atk={currentPhaseDamage}");
+            hitTreasuresInPhase.Clear();
         }
 
         wasAttacking = true;
@@ -70,34 +68,42 @@ public class WeaponHitbox : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider col)
     {
-        if (attackDamage <= 0 || owner == null)
+        TryHit(col);
+    }
+
+    protected virtual void OnTriggerStay(Collider col)
+    {
+        TryHit(col);
+    }
+
+    private void TryHit(Collider col)
+    {
+        if (attackDamage <= 0f || owner == null)
+            return;
+
+        if (col == null)
             return;
 
         if (col.transform.root == owner.transform.root)
             return;
 
+        // Treasure
         if (canHitTreasure && col.CompareTag("Treasure"))
         {
-            if (logHit)
-                Debug.Log($"[WeaponHitbox] {name} hit treasure {col.name}, atk={attackDamage}");
+            if (!hitTreasuresInPhase.Add(col))
+                return;
 
             col.SendMessage("Hit", SendMessageOptions.DontRequireReceiver);
             return;
         }
 
+        // CombatActor
         CombatActor targetActor = FindCombatActor(col);
 
         if (targetActor != null && targetActor.faction != owner.faction)
         {
-            // 同一個 phase 內只命中一次
-            if (hitTargetsInPhase.Contains(targetActor))
-            {
-                if (logRepeatBlocked)
-                    Debug.Log($"[WeaponHitbox] repeat blocked in same phase on {targetActor.name}, atk={attackDamage}");
+            if (!hitTargetsInPhase.Add(targetActor))
                 return;
-            }
-
-            hitTargetsInPhase.Add(targetActor);
 
             AttackData attack = new AttackData
             {
@@ -109,15 +115,8 @@ public class WeaponHitbox : MonoBehaviour
                 strength = strength
             };
 
-            if (logHit)
-                Debug.Log($"[WeaponHitbox] {name} hit {col.name}, tag={col.tag}, phaseAtk={attackDamage}, deal {attack.damage} to {targetActor.name}");
-
             targetActor.TakeDamage(attack);
-            return;
         }
-
-        if (logInvalidHit)
-            Debug.Log($"[WeaponHitbox] no valid target found on {col.name}, tag={col.tag}");
     }
 
     protected CombatActor FindCombatActor(Collider col)
