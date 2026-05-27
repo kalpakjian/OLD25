@@ -43,7 +43,6 @@ StateMachine: Base Layer
       Speed: 1
       WriteDefaultValues: True
       Behaviours:
-        - CombatRotate
         - AnimationSound
         - AttackEffect
         - CombatAttack
@@ -62,7 +61,6 @@ StateMachine: Base Layer
       Speed: 1
       WriteDefaultValues: True
       Behaviours:
-        - CombatRotate
         - AnimationSound
       Transitions:
         - hurt -> move
@@ -84,8 +82,6 @@ StateMachine: Base Layer
       Motion: Blend Tree
       Speed: 1
       WriteDefaultValues: True
-      Behaviours:
-        - CombatRotate
       Transitions:
         - move -> attack
           HasExitTime: False
