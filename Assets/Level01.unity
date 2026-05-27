@@ -674,6 +674,7 @@ MonoBehaviour:
   traceRange: 5
   attackRange: 2
   attackInterval: 2
+  speedDampTime: 0.1
   rewardItem: {fileID: 0}
 --- !u!1 &218157149 stripped
 GameObject:
@@ -1277,6 +1278,7 @@ MonoBehaviour:
   traceRange: 5
   attackRange: 2
   attackInterval: 3
+  speedDampTime: 0.1
   rewardItem: {fileID: 0}
   hurtSound: {fileID: 8300000, guid: 35fbd212d15bbbd4e86c15f35b7d2e1d, type: 3}
 --- !u!4 &699668942 stripped
@@ -1964,6 +1966,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9582790, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3f0b3eb80ff432f4c854069a28977eef, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
 --- !u!1 &1277323135
@@ -2287,6 +2293,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9582790, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3f0b3eb80ff432f4c854069a28977eef, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
 --- !u!1 &1489972272
@@ -2425,6 +2435,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 67566afe08549ac40af1856c9d163498, type: 2}
+    - target: {fileID: 9582790, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3f0b3eb80ff432f4c854069a28977eef, type: 2}
     - target: {fileID: 13790642, guid: 2008e8de4d5e41d47b488c1c3ccc0479, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3176,6 +3190,7 @@ MonoBehaviour:
   traceRange: 5
   attackRange: 2
   attackInterval: 2
+  speedDampTime: 0.1
   rewardItem: {fileID: 0}
 --- !u!1 &2060910883
 GameObject:

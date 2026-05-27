@@ -44,7 +44,7 @@ StateMachine: Base Layer
       Speed: 1
       WriteDefaultValues: True
       Behaviours:
-        - RotatableMotion
+        - CombatRotate
       Transitions:
         - move -> attack01
           HasExitTime: False
@@ -72,11 +72,10 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
-        - RotatableMotion
+        - CombatRotate
         - NextAttack
-        - PlayerAttack
-        - AutoTarget
         - AttackEffect
+        - CombatAttack
       Transitions:
         - attack01 -> move
           HasExitTime: True
@@ -103,11 +102,10 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
-        - RotatableMotion
+        - CombatRotate
         - NextAttack
-        - PlayerAttack
-        - AutoTarget
         - AttackEffect
+        - CombatAttack
       Transitions:
         - attack02 -> attack03
           HasExitTime: False
@@ -134,11 +132,10 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
-        - RotatableMotion
+        - CombatRotate
         - NextAttack
-        - PlayerAttack
-        - AutoTarget
         - AttackEffect
+        - CombatAttack
       Transitions:
         - attack03 -> move
           HasExitTime: True
@@ -155,7 +152,7 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
-        - RotatableMotion
+        - CombatRotate
         - Invincible
       Transitions:
         - roll -> move
@@ -179,7 +176,7 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
-        - RotatableMotion
+        - CombatRotate
       Transitions:
         - hurt -> move
           HasExitTime: True

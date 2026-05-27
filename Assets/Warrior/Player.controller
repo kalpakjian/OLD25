@@ -197,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRotateOnEnter: 0
   faceTargetOnEnter: 0
+  maxRange: 0
   changeDirection: 0
   slerpToTarget: 0
   slerpSpeed: 10
@@ -636,6 +637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRotateOnEnter: 1
   faceTargetOnEnter: 0
+  maxRange: 0
   changeDirection: 0
   slerpToTarget: 0
   slerpSpeed: 10
@@ -945,6 +947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRotateOnEnter: 0
   faceTargetOnEnter: 0
+  maxRange: 0
   changeDirection: 1
   slerpToTarget: 0
   slerpSpeed: 10

@@ -6,16 +6,16 @@ Path: Assets/Skeleton/Enemy.controller
 
 Parameters
 ----------------------------------------
-- walk : Bool  default=False
 - attack : Trigger  default=(trigger)
 - hurt : Trigger  default=(trigger)
 - die : Trigger  default=(trigger)
+- speed : Float  default=0
 
 ========================================
 Layer 0: Base Layer
 ========================================
 StateMachine: Base Layer
-  DefaultState: idle
+  DefaultState: move
   Any State Transitions:
     - AnyState -> hurt
       HasExitTime: False
@@ -38,69 +38,17 @@ StateMachine: Base Layer
       Conditions:
         - die If 0
   States:
-    - idle
-      Motion: idle
-      Speed: 1
-      WriteDefaultValues: True
-      Transitions:
-        - idle -> walk
-          HasExitTime: False
-          ExitTime: 0.875
-          Duration: 0.25
-          Offset: 0
-          InterruptionSource: None
-          OrderedInterruption: True
-          CanTransitionToSelf: True
-          Conditions:
-            - walk If 0
-        - idle -> attack
-          HasExitTime: False
-          ExitTime: 0.875
-          Duration: 0.25
-          Offset: 0
-          InterruptionSource: None
-          OrderedInterruption: True
-          CanTransitionToSelf: True
-          Conditions:
-            - attack If 0
-    - walk
-      Motion: walk
-      Speed: 1
-      WriteDefaultValues: True
-      Behaviours:
-        - EnemyRotate
-      Transitions:
-        - walk -> attack
-          HasExitTime: False
-          ExitTime: 0.688
-          Duration: 0.25
-          Offset: 0
-          InterruptionSource: None
-          OrderedInterruption: True
-          CanTransitionToSelf: True
-          Conditions:
-            - attack If 0
-        - walk -> idle
-          HasExitTime: False
-          ExitTime: 0.688
-          Duration: 0.25
-          Offset: 0
-          InterruptionSource: None
-          OrderedInterruption: True
-          CanTransitionToSelf: True
-          Conditions:
-            - walk IfNot 0
     - attack
       Motion: attack
       Speed: 1
       WriteDefaultValues: True
       Behaviours:
-        - EnemyRotate
+        - CombatRotate
         - AnimationSound
-        - EnemyAttack
         - AttackEffect
+        - CombatAttack
       Transitions:
-        - attack -> idle
+        - attack -> move
           HasExitTime: True
           ExitTime: 0.813
           Duration: 0.25
@@ -114,10 +62,10 @@ StateMachine: Base Layer
       Speed: 1
       WriteDefaultValues: True
       Behaviours:
-        - EnemyRotate
+        - CombatRotate
         - AnimationSound
       Transitions:
-        - hurt -> idle
+        - hurt -> move
           HasExitTime: True
           ExitTime: 0.531
           Duration: 0.25
@@ -132,4 +80,21 @@ StateMachine: Base Layer
       WriteDefaultValues: True
       Behaviours:
         - AnimationSound
+    - move
+      Motion: Blend Tree
+      Speed: 1
+      WriteDefaultValues: True
+      Behaviours:
+        - CombatRotate
+      Transitions:
+        - move -> attack
+          HasExitTime: False
+          ExitTime: 0.79
+          Duration: 0.25
+          Offset: 0
+          InterruptionSource: None
+          OrderedInterruption: True
+          CanTransitionToSelf: True
+          Conditions:
+            - attack If 0
 
