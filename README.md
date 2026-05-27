@@ -144,11 +144,47 @@
 
 **修改檔案：** `Assets/Level01.unity`
 
-- 部分敵人的 `maxHP` 從 100 調高至 **200**，使戰鬥節奏更耐打
+- 部分敵人的 `max判斷` 從 100 調高至 **200**，使戰鬥節奏更耐打
 - 兩個武器組件的 `weaponDamage` 從 0 設定為 **10**，修正原本造成 0 傷害的問題
 - 一種敵人類型的 script 參考換成新版 GUID（對應舊版 `EnemyController` → 新版繼承 `EnemyBase` 的腳本）
 - 實體組件欄位排列重新整理：`faction`、`power`、`maxHP` 現在排在 `traceRange`、`attackRange` 等戰鬥欄位之前，與 `CombatActor` 的 Inspector 定義一致
-- `AllowRotate` 改名為 `allowRotate`，與新版 `CombatActor.allowRotate` 欄位名稱對齊
+- `AllowRotate` 改名為 `allowRotate`，與新．`CombatActor.allowRotate` 欄位名稱對齊
+
+---
+
+### 12. `WeaponHitbox` 邏輯統一與 Phase 判定優化（87a13cc, b258fcf, 67d26c2）
+
+**修改檔案：** `Assets/Script/NEW/WeaponHitbox.cs`
+
+- **邏輯統一**：移除玩家與敵人的專用武器腳本，改由單一 `WeaponHitbox` 處理所有碰撞邏輯。
+- **Phase-based Hit Tracking**：引入 Phase 概念，在同一次攻擊週期（Phase）內，對同一個目標僅觸發一次傷害，有效防止多重碰撞判定導致的傷害溢出。
+- **支援寶箱攻擊**：新增 `canHitTreasure` 欄位，允許玩家武器等特定武器能觸發寶箱（Treasure）的互動。
+
+---
+
+### 13. 實作 `CombatRotate` 統一旋轉機制（014c681, f7cb5d1）
+
+**修改檔案：** `Assets/Script/Enemy/EnemyRotate.cs`
+
+- **StateMachineBehaviour (SMB) 化**：將旋轉邏輯從 Animator 節點移出，改由 `CombatRotate` SMB 統一管理，減少 Animator Controller 的複雜度。
+- **進階控制**：新增 `maxRange` 欄位，用於精確控制攻擊範圍內的目標偵測距離。
+
+---
+
+### 14. `EnemyController` 建立與 Metadata 更新（f9c80ce）
+
+**修改檔案：** `Assets/Script/Enemy/EnemyController.cs`、`Assets/Level01.unity`
+
+- **新版驅動器**：建立 `EnemyController` 作為舊版 `Enemy` (OLDEnemy) 的薄封裝，驅動其生命週期。
+- **Metadata 同步**：更新場景資源的 Metadata，確保與新版腳本結構一致。
+
+---
+
+### 15. 移除 Animator 中的旋轉行為（e923eee）
+
+**修改檔案：** `Assets/Skeleton/Enemy.controller`、`Assets/Warrior/Player.controller`
+
+- **架構重構**：移除原本直接寫在 Animator 節點中的旋轉 logic，全面改用獨立的 SMB 進行管理，達成邏輯與動畫數據的分離。
 
 ---
 
